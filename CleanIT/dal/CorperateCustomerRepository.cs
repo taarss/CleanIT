@@ -13,7 +13,7 @@ namespace CleanIT.dal
             biz business = new biz();
             DataSet dataSet = business.Execute("SELECT * FROM CorporateCustomer");
             DataTable customerTable = dataSet.Tables[0];
-            List<CorporateCustomer> corporateCustomers = new List<CorporateCustomer>()
+            List<CorporateCustomer> corporateCustomers = new List<CorporateCustomer>();
             foreach (DataRow itemRow in customerTable.Rows)
             {
                 corporateCustomers.Add(
