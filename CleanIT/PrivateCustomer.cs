@@ -11,7 +11,7 @@ namespace CleanIT
         private string address;
         private int zipCode;
 
-        public PrivateCustomer(string firstName, string lastName, string address, int zipCode, int phoneNumber) : base(phoneNumber)
+        public PrivateCustomer(string firstName, string lastName, string address, int zipCode, int phoneNumber, int id) : base(phoneNumber, id)
         {
             this.FirstName = firstName;
             this.LastName = lastName;

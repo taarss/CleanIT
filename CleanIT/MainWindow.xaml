@@ -37,13 +37,48 @@
             <Canvas x:Name="booking" Width="600" Canvas.Left="200" Height="435" Background="White">
                 <TextBlock TextAlignment="Center" FontSize="20" Canvas.Left="211" Canvas.Top="9">Opret ny kunde eller<LineBreak></LineBreak>vælg eksisterende</TextBlock>
                 <Rectangle Fill="Black" Height="2" Width="300" Canvas.Left="155" Canvas.Top="68"></Rectangle>
-                <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="23" Canvas.Top="361" Height="50" Width="221" Click="pickCustomerFromDb_Click">Vælg ksisterende kunde</Button>
-                <Border x:Name="existingCustomerList" BorderBrush="DarkSlateGray" BorderThickness="2" Width="239" Height="252" Background="White" Canvas.Left="30" Canvas.Top="78">
-                    <Canvas>
+                <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="31" Canvas.Top="362" Height="50" Width="238" Click="pickCustomerFromDb_Click">Vælg eksisterende kunde</Button>
+                <Button x:Name="privateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="105" Width="180" Click="privateCustomerBtn_Click">Privat Kunde</Button>
+                <Button x:Name="corperateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="155" Click="corperateCustomerBtn_Click">Virksomheds Kunde</Button>
 
-                    </Canvas>
+                <Border x:Name="listCustomer" Visibility="Hidden" BorderBrush="DarkSlateGray" BorderThickness="2" Canvas.Left="30" Canvas.Top="90">
+                    <ScrollViewer Background="LightGray" VerticalScrollBarVisibility="Auto" Height="249" Width="235" Canvas.Top="92">
+                        <StackPanel x:Name="customerList">
+
+                        </StackPanel>
+                    </ScrollViewer>
 
                 </Border>
+                <Canvas x:Name="newPrivatCustomer" Background="White" Visibility="Visible" Width="600" Height="250" Canvas.Top="100">
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="31">Fornavn</TextBlock>
+                    <TextBox x:Name="firstnameInput" Canvas.Left="127" Canvas.Top="35" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="61">Efternavn</TextBlock>
+                    <TextBox x:Name="lastnameInput" Canvas.Left="127" Canvas.Top="65" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="91">Addresse</TextBlock>
+                    <TextBox x:Name="addressInput" Canvas.Left="127" Canvas.Top="95" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="121">Postkode</TextBlock>
+                    <TextBox x:Name="zipCodeInput" Canvas.Left="127" Canvas.Top="125" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="151">Telefon</TextBlock>
+                    <TextBox x:Name="phoneNumberInput" Canvas.Left="127" Canvas.Top="155" Width="96"></TextBox>
+                    <Button x:Name="nextInputPagePrivate" FontSize="18" Canvas.Left="464" Canvas.Top="197" Click="nextInputPagePrivate_Click" Height="36" Width="76">Næste</Button>
+                </Canvas>
+                <Canvas x:Name="newCorperateCustomer" Width="600" Height="250" Canvas.Top="100">
+
+                </Canvas>
+                <Canvas x:Name="inputWorkInfo" Visibility="Hidden" Width="600" Height="352" Background="White" Canvas.Top="80">
+                    <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="20">Dato</TextBlock>
+                    <TextBlock FontSize="17" Canvas.Left="65" Canvas.Top="20">D/</TextBlock>
+                    <TextBox x:Name="dateInputDate" Canvas.Left="86" Canvas.Top="24" Width="30"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="124" Canvas.Top="20" RenderTransformOrigin="0.32,0.488">M/</TextBlock>
+                    <TextBox x:Name="dateInputMonth" Canvas.Left="150" Canvas.Top="24" Width="30" RenderTransformOrigin="0.6,0.448"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="188" Canvas.Top="21" Width="20">Å/</TextBlock>
+                    <TextBox x:Name="dateInputYear" Canvas.Left="213" Canvas.Top="25" Width="60"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="74">Time pris</TextBlock>
+                    <TextBox Width="67" Canvas.Left="91" Canvas.Top="79"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="134">Beskrivilse</TextBlock>
+                    <TextBox Width="292" Canvas.Left="16" Canvas.Top="165" Height="115"></TextBox>
+                    <Button x:Name="createBookingBtn" FontSize="17" Canvas.Left="432" Canvas.Top="246" Height="36" Width="75" Click="createBookingBtn_Click">Færdig</Button>
+                </Canvas>
 
             </Canvas>
 

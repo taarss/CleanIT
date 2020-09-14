@@ -10,6 +10,7 @@ namespace CleanIT
     {
         private string connectionString = "Data Source=PC-BB-5987;Initial Catalog=cleanIt;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
+
         private DataSet resultSet = new DataSet();
         public DataSet Execute(string query)
         {
