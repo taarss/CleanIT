@@ -37,7 +37,7 @@
             <Canvas x:Name="booking" Width="600" Canvas.Left="200" Height="435" Background="White">
                 <TextBlock TextAlignment="Center" FontSize="20" Canvas.Left="211" Canvas.Top="9">Opret ny kunde eller<LineBreak></LineBreak>vælg eksisterende</TextBlock>
                 <Rectangle Fill="Black" Height="2" Width="300" Canvas.Left="155" Canvas.Top="68"></Rectangle>
-                <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="31" Canvas.Top="362" Height="50" Width="238" Click="pickCustomerFromDb_Click">Vælg eksisterende kunde</Button>
+                <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="32" Canvas.Top="350" Height="50" Width="238" Click="pickCustomerFromDb_Click">Vælg eksisterende kunde</Button>
                 <Button x:Name="privateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="105" Width="180" Click="privateCustomerBtn_Click">Privat Kunde</Button>
                 <Button x:Name="corperateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="155" Click="corperateCustomerBtn_Click">Virksomheds Kunde</Button>
 
@@ -49,7 +49,7 @@
                     </ScrollViewer>
 
                 </Border>
-                <Canvas x:Name="newPrivatCustomer" Background="White" Visibility="Visible" Width="600" Height="250" Canvas.Top="100">
+                <Canvas x:Name="newPrivatCustomer" Background="White" Visibility="Hidden" Width="600" Height="250" Canvas.Top="100">
                     <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="31">Fornavn</TextBlock>
                     <TextBox x:Name="firstnameInput" Canvas.Left="127" Canvas.Top="35" Width="96"></TextBox>
                     <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="61">Efternavn</TextBlock>
@@ -62,8 +62,14 @@
                     <TextBox x:Name="phoneNumberInput" Canvas.Left="127" Canvas.Top="155" Width="96"></TextBox>
                     <Button x:Name="nextInputPagePrivate" FontSize="18" Canvas.Left="464" Canvas.Top="197" Click="nextInputPagePrivate_Click" Height="36" Width="76">Næste</Button>
                 </Canvas>
-                <Canvas x:Name="newCorperateCustomer" Width="600" Height="250" Canvas.Top="100">
-
+                <Canvas x:Name="newCorperateCustomer" Visibility="Hidden" Width="600" Height="318" Canvas.Top="100" Background="White">
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="31">Firma navn</TextBlock>
+                    <TextBox x:Name="companyNameInput" Canvas.Left="127" Canvas.Top="35" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="61">Telefon</TextBlock>
+                    <TextBox x:Name="companyPhoneInput" Canvas.Left="127" Canvas.Top="65" Width="96"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="42" Canvas.Top="91">SE nummer</TextBlock>
+                    <TextBox x:Name="seNumberInput" Canvas.Left="127" Canvas.Top="95" Width="96"></TextBox>
+                    <Button x:Name="nextInputPageCorporate" FontSize="18" Height="42" Width="95" Canvas.Left="402" Canvas.Top="223" Click="nextInputPageCorporate_Click">Næste</Button>
                 </Canvas>
                 <Canvas x:Name="inputWorkInfo" Visibility="Hidden" Width="600" Height="352" Background="White" Canvas.Top="80">
                     <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="20">Dato</TextBlock>
@@ -74,9 +80,15 @@
                     <TextBlock FontSize="17" Canvas.Left="188" Canvas.Top="21" Width="20">Å/</TextBlock>
                     <TextBox x:Name="dateInputYear" Canvas.Left="213" Canvas.Top="25" Width="60"></TextBox>
                     <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="74">Time pris</TextBlock>
-                    <TextBox Width="67" Canvas.Left="91" Canvas.Top="79"></TextBox>
-                    <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="134">Beskrivilse</TextBlock>
-                    <TextBox Width="292" Canvas.Left="16" Canvas.Top="165" Height="115"></TextBox>
+                    <TextBlock Foreground="Gray" FontSize="14" Canvas.Left="16" Canvas.Top="98">Hvis tom, så er det standard time løn</TextBlock>
+
+                    <TextBox x:Name="inputHourlyPay" Width="67" Canvas.Left="91" Canvas.Top="79"></TextBox>
+                    <TextBlock FontSize="17" Canvas.Left="15" Canvas.Top="134">Beskrivelse</TextBlock>
+                    <TextBox x:Name="bookingDescription" Width="292" Canvas.Left="16" Canvas.Top="165" Height="115"></TextBox>
+
+                    <TextBox x:Name="inputWorkingHours" Canvas.Left="350" Canvas.Top="25" Width="60"></TextBox>
+                    <TextBlock Foreground="Gray" FontSize="14" Canvas.Left="347" Canvas.Top="48">Angiv for timer det bliver abrejdet.</TextBlock>
+
                     <Button x:Name="createBookingBtn" FontSize="17" Canvas.Left="432" Canvas.Top="246" Height="36" Width="75" Click="createBookingBtn_Click">Færdig</Button>
                 </Canvas>
 

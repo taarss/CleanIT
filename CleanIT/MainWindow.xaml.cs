@@ -104,29 +104,94 @@ namespace CleanIT
 
         private void nextInputPagePrivate_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (firstnameInput.Text != "" && lastnameInput.Text != null && addressInput.Text != null && zipCodeInput.Text != null && phoneNumberInput != null)
+            try
             {
-                inputWorkInfo.Visibility = Visibility.Visible;
-                biz.createPrivateCustomer(firstnameInput.Text, lastnameInput.Text, addressInput.Text, Convert.ToInt32(zipCodeInput.Text), Convert.ToInt32(phoneNumberInput.Text));
+                if (firstnameInput.Text != "" && lastnameInput.Text != "" && addressInput.Text != "" && zipCodeInput.Text != "" && phoneNumberInput.Text != "")
+                {
+                    if (biz.CreatePrivateCustomer(firstnameInput.Text, lastnameInput.Text, addressInput.Text, Convert.ToInt32(zipCodeInput.Text), Convert.ToInt32(phoneNumberInput.Text)) == true)
+                    {
+                        newPrivatCustomer.Visibility = Visibility.Hidden;
+                        inputWorkInfo.Visibility = Visibility.Visible;
+                    } 
+                }
+                else
+                {
+                    MessageBox.Show("Husk at indtaste alle punkter");
+                }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Husk at indtaste alle punkter");
+                MessageBox.Show("Forket input. En eller flere felter har fået et forket slags input");
             }
-        }
 
-        public void customerAlreadyExistsError()
+        }
+        private void nextInputPageCorporate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("A customer with that phone number already exists");
-        }
+            try
+            {
 
+                if (companyNameInput.Text != "" && companyPhoneInput.Text != "" && seNumberInput.Text != "")
+                {
+                    if (biz.CreateCorporateCustomer(companyNameInput.Text, Convert.ToInt32(companyPhoneInput.Text), Convert.ToInt32(seNumberInput.Text)) == true)
+                    {
+                        newCorperateCustomer.Visibility = Visibility.Hidden;
+                        inputWorkInfo.Visibility = Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Husk at indtaste alle punkter");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+            
+        }
         private void createBookingBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (dateInputDate.Text != null && dateInputMonth != null && dateInputYear.Text != null)
-            {
-                string completeDate = $"{dateInputDate.Text.ToString()}-{dateInputMonth.Text.ToString()}-{dateInputYear.Text.ToString()}";
-            }
+            string completeDate = "";
+           
+                if (dateInputDate.Text != "" && dateInputMonth.Text != "" && dateInputYear.Text != "")
+                {
+                    Convert.ToInt32(dateInputDate.Text);
+                    Convert.ToInt32(dateInputMonth.Text);
+                    Convert.ToInt32(dateInputYear.Text);
+                    Convert.ToInt32(inputHourlyPay.Text);
+                    Convert.ToInt32(inputWorkingHours.Text);
+                    completeDate = $"{dateInputDate.Text.ToString()}-{dateInputMonth.Text.ToString()}-{dateInputYear.Text.ToString()}";
+                }
+                else
+                {
+                    MessageBox.Show("Indtast alle dato felter");
+                }
+                if (bookingDescription.Text == "")
+                {
+                    MessageBox.Show("Du skal angive en booking beskrivelse");
+                }
+                if (inputWorkingHours.Text == "")
+                {
+                    MessageBox.Show("Du skal angive hvor mange timer abrjedet vil tage.");
+                }
+                else
+                {
+                    int hourlyPay = 0;
+                    if (inputHourlyPay.Text == "")
+                    {
+                        hourlyPay = 150;
+                    }
+                    biz.CreateBooking(completeDate, Convert.ToInt32(inputWorkingHours.Text), hourlyPay, bookingDescription.Text);
+                }
+
+            
+            
+
+
         }
+
+       
     }
 }
