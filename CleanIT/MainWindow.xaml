@@ -1,0 +1,52 @@
+﻿<Window x:Class="CleanIT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CleanIT"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Canvas x:Name="main">
+            <Canvas Width="200" Height="435" Background="DarkSlateGray">
+                <Button x:Name="homeBtn" Canvas.Left="20" Canvas.Top="40" FontSize="20" BorderThickness="0" Background="Transparent" Foreground="White" Click="homeBtn_Click">
+                    Hjem
+                </Button>
+                <Rectangle Canvas.Left="20" Canvas.Top="70" Height="2" Width="150" Fill="White"></Rectangle>
+                <Button x:Name="overviewBtn" Canvas.Left="20" Canvas.Top="80" FontSize="20" BorderThickness="0" Background="Transparent" Foreground="White" Click="overviewBtn_Click">
+                    Oversigt
+                </Button>
+                <Rectangle Canvas.Left="20" Canvas.Top="110" Height="2" Width="150" Fill="White"></Rectangle>
+                <Button x:Name="bookingBtn" Canvas.Left="20" Canvas.Top="120" FontSize="20" BorderThickness="0" Background="Transparent" Foreground="White" Click="bookingBtn_Click">
+                    Opret aftale
+                </Button>
+                <Rectangle Canvas.Left="20" Canvas.Top="150" Height="2" Width="150" Fill="White"></Rectangle>
+                <Button x:Name="closeProgram" Canvas.Left="20" Canvas.Top="360" FontSize="20" BorderThickness="0" Background="Transparent" Foreground="White" Click="closeProgram_Click">
+                    Luk program
+                </Button>
+
+            </Canvas>
+
+            <Canvas x:Name="homeScreen" Width="600" Canvas.Left="200" Height="435">
+                <TextBlock FontSize="40" FontWeight="SemiBold" Canvas.Left="227" Canvas.Top="41">CleanIt</TextBlock>
+                <Rectangle Height="2" Width="300" Fill="Black" Canvas.Left="149" Canvas.Top="96"></Rectangle>
+                <TextBlock FontSize="30" Canvas.Left="162" Canvas.Top="98">Registrering program</TextBlock>
+            </Canvas>
+
+
+            <Canvas x:Name="booking" Width="600" Canvas.Left="200" Height="435" Background="White">
+                <TextBlock TextAlignment="Center" FontSize="20" Canvas.Left="211" Canvas.Top="9">Opret ny kunde eller<LineBreak></LineBreak>vælg eksisterende</TextBlock>
+                <Rectangle Fill="Black" Height="2" Width="300" Canvas.Left="155" Canvas.Top="68"></Rectangle>
+                <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="23" Canvas.Top="361" Height="50" Width="221" Click="pickCustomerFromDb_Click">Vælg ksisterende kunde</Button>
+                <Border x:Name="existingCustomerList" BorderBrush="DarkSlateGray" BorderThickness="2" Width="239" Height="252" Background="White" Canvas.Left="30" Canvas.Top="78">
+                    <Canvas>
+
+                    </Canvas>
+
+                </Border>
+
+            </Canvas>
+
+        </Canvas>
+    </Grid>
+</Window>
