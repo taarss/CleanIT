@@ -34,15 +34,15 @@
             </Canvas>
 
 
-            <Canvas x:Name="booking" Width="600" Canvas.Left="200" Height="435" Background="White">
+            <Canvas x:Name="booking" Visibility="Hidden" Width="600" Canvas.Left="200" Height="435" Background="White">
                 <TextBlock TextAlignment="Center" FontSize="20" Canvas.Left="211" Canvas.Top="9">Opret ny kunde eller<LineBreak></LineBreak>vælg eksisterende</TextBlock>
                 <Rectangle Fill="Black" Height="2" Width="300" Canvas.Left="155" Canvas.Top="68"></Rectangle>
                 <Button x:Name="pickCustomerFromDb" FontSize="20" Canvas.Left="32" Canvas.Top="350" Height="50" Width="238" Click="pickCustomerFromDb_Click">Vælg eksisterende kunde</Button>
                 <Button x:Name="privateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="105" Width="180" Click="privateCustomerBtn_Click">Privat Kunde</Button>
                 <Button x:Name="corperateCustomerBtn" FontSize="20" Canvas.Left="26" Canvas.Top="155" Click="corperateCustomerBtn_Click">Virksomheds Kunde</Button>
 
-                <Border x:Name="listCustomer" Visibility="Hidden" BorderBrush="DarkSlateGray" BorderThickness="2" Canvas.Left="30" Canvas.Top="90">
-                    <ScrollViewer Background="LightGray" VerticalScrollBarVisibility="Auto" Height="249" Width="235" Canvas.Top="92">
+                <Border x:Name="listCustomer" Visibility="Visible" BorderBrush="DarkSlateGray" BorderThickness="2" Canvas.Left="25" Canvas.Top="90">
+                    <ScrollViewer Background="LightGray" VerticalScrollBarVisibility="Auto" Height="249" Width="245" Canvas.Top="92">
                         <StackPanel x:Name="customerList">
 
                         </StackPanel>
@@ -91,8 +91,42 @@
 
                     <Button x:Name="createBookingBtn" FontSize="17" Canvas.Left="432" Canvas.Top="246" Height="36" Width="75" Click="createBookingBtn_Click">Færdig</Button>
                 </Canvas>
+                <Canvas x:Name="bookingCreated" Visibility="Hidden" Width="600" Height="431" Background="White" Canvas.Top="1">
+                    <TextBlock Foreground="DarkSlateGray" FontSize="40" Canvas.Left="169" Canvas.Top="45">Aftale oprettet</TextBlock>
+                </Canvas>
 
             </Canvas>
+            <Canvas x:Name="overview" Visibility="Hidden" Width="600" Height="435" Background="White" Canvas.Left="201">
+                <TextBlock FontSize="20" Canvas.Left="370" Canvas.Top="50">Virksomheder</TextBlock>
+                <TextBlock FontSize="20" Canvas.Left="83" Canvas.Top="50">Private Kunder</TextBlock>
+                <Border x:Name="listPrivateCustomer" Visibility="Visible" BorderBrush="DarkSlateGray" BorderThickness="2" Canvas.Left="25" Canvas.Top="90">
+                    <ScrollViewer Background="LightGray" VerticalScrollBarVisibility="Auto" Height="249" Width="245" Canvas.Top="92">
+                        <StackPanel x:Name="privateCustomerList">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <Border x:Name="listCorporateCustomer" Visibility="Visible" BorderBrush="DarkSlateGray" BorderThickness="2" Canvas.Left="310" Canvas.Top="90">
+                    <ScrollViewer Background="LightGray" VerticalScrollBarVisibility="Auto" Height="249" Width="245" Canvas.Top="92">
+                        <StackPanel x:Name="CorporateCustomerList">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+                <Border x:Name="customerDetails" Visibility="Hidden"  Canvas.Left="150" Canvas.Top="50" BorderBrush="DarkSlateGray" BorderThickness="3">
+                    <Canvas Width="300" Height="250" Background="White">
+                        <Button x:Name="closeDetailBtn" FontWeight="ExtraBold" BorderBrush="Transparent" Background="PaleVioletRed" Height="29" Width="29" Canvas.Left="272" Canvas.Top="-1" Click="closeDetailBtn_Click">X</Button>
+                        <TextBlock x:Name="customerName" FontSize="20" Canvas.Left="15" Canvas.Top="35">Christian Villadsen</TextBlock>
+                        <TextBlock x:Name="customerPhoneNumber" FontSize="20" Canvas.Left="18" Canvas.Top="68">25252525</TextBlock>
+                        <TextBlock FontSize="20" Canvas.Left="19" Canvas.Top="127">Har brugt</TextBlock>
+                        <TextBlock x:Name="customerAmountSpent" FontSize="20" Canvas.Left="124" Canvas.Top="130" Width="163">3434343</TextBlock>
+
+
+                    </Canvas>
+                </Border>
+            </Canvas>
+
 
         </Canvas>
     </Grid>

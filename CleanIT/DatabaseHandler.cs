@@ -8,7 +8,7 @@ namespace CleanIT
 {
     public class DatabaseHandler
     {
-        private string connectionString = "Data Source=DESKTOP-7VJ1O7V;Initial Catalog=cleanIt;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private string connectionString = "Data Source=PC-BB-5987;Initial Catalog=cleanIt;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 
         private DataSet resultSet = new DataSet();

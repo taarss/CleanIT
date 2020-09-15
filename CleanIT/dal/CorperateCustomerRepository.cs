@@ -17,7 +17,7 @@ namespace CleanIT.dal
             foreach (DataRow itemRow in customerTable.Rows)
             {
                 corporateCustomers.Add(
-                    new CorporateCustomer((string)itemRow["companyName"], (int)itemRow["seNumber"], (int)itemRow["phoneNumber"], (int)itemRow["id"])
+                    new CorporateCustomer((string)itemRow["companyName"], (int)itemRow["seNumber"], (int)itemRow["phoneNumber"], (int)itemRow["id"], (int)itemRow["amountSpent"])
                     );
             }
             return corporateCustomers;
