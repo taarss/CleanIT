@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CleanIT.dal;
+
 
 namespace CleanIT
 {
@@ -57,31 +59,7 @@ namespace CleanIT
             newCorperateCustomer.Visibility = Visibility.Hidden;
             inputWorkInfo.Visibility = Visibility.Hidden;
             bookingCreated.Visibility = Visibility.Hidden;
-            overview.Visibility = Visibility.Visible;
-
-            CorperateCustomerRepository corperate = new CorperateCustomerRepository();
-            PrivateCustomerRepository privateCustomer = new PrivateCustomerRepository();
-            listCustomer.Visibility = Visibility.Visible;
-            List<CorporateCustomer> corporateCustomers = corperate.GetCorporateCustomers();
-            foreach (var item in corporateCustomers)
-            {
-                Button button = new Button();
-                button.Width = 235;
-                button.Content = item.CompanyName;
-                button.Tag = item.Id;
-                button.Click += new RoutedEventHandler(openCustomerDetail_Click);
-                CorporateCustomerList.Children.Add(button);
-            }
-            List<PrivateCustomer> privateCustomers = privateCustomer.GetPrivateCustomers();
-            foreach (var item in privateCustomers)
-            {
-                Button button = new Button();
-                button.Width = 235;
-                button.Content = item.FirstName + " " + item.LastName;
-                button.Tag = item.Id;
-                button.Click += new RoutedEventHandler(openCustomerDetail_Click);
-                privateCustomerList.Children.Add(button);
-            }
+            overview.Visibility = Visibility.Visible;          
         }
 
         private void openCustomerDetail_Click(object sender, RoutedEventArgs e)
@@ -121,6 +99,7 @@ namespace CleanIT
             homeScreen.Visibility = Visibility.Hidden;
             booking.Visibility = Visibility.Visible;
             overview.Visibility = Visibility.Hidden;
+            listCustomer.Visibility = Visibility.Hidden;
         }
 
         private void closeProgram_Click(object sender, RoutedEventArgs e)
@@ -233,9 +212,7 @@ namespace CleanIT
             
         }
         private void createBookingBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string completeDate = "";
-           
+        {           
                 if (dateInputDate.Text != "" && dateInputMonth.Text != "" && dateInputYear.Text != "")
                 {
                     Convert.ToInt32(dateInputDate.Text);
@@ -243,11 +220,14 @@ namespace CleanIT
                     Convert.ToInt32(dateInputYear.Text);
                     Convert.ToInt32(inputHourlyPay.Text);
                     Convert.ToInt32(inputWorkingHours.Text);
-                    completeDate = $"{dateInputDate.Text.ToString()}-{dateInputMonth.Text.ToString()}-{dateInputYear.Text.ToString()}";
                 }
                 else
                 {
                     MessageBox.Show("Indtast alle dato felter");
+                }
+                if (dateInputDate.Text.Length > 2 && dateInputMonth.Text.Length > 2 && dateInputYear.Text.Length > 4)
+                {
+                    MessageBox.Show("Indtast en gyldig dato.");
                 }
                 if (bookingDescription.Text == "")
                 {
@@ -256,6 +236,11 @@ namespace CleanIT
                 if (inputWorkingHours.Text == "")
                 {
                     MessageBox.Show("Du skal angive hvor mange timer abrjedet vil tage.");
+                }
+                string date = biz.formatDate(dateInputDate.Text, dateInputMonth.Text, dateInputYear.Text);
+                if (biz.IsDateBooked(date))
+                {
+                    MessageBox.Show("Denne dato er alerade booket.");
                 }
                 else
                 {
@@ -269,7 +254,7 @@ namespace CleanIT
                     {
                         isNewCustomer = false;
                     }
-                    biz.CreateBooking(completeDate, Convert.ToInt32(inputWorkingHours.Text), Convert.ToInt32(inputHourlyPay.Text), bookingDescription.Text, isNewCustomer, tempId);
+                    biz.CreateBooking(date, Convert.ToInt32(inputWorkingHours.Text), Convert.ToInt32(inputHourlyPay.Text), bookingDescription.Text, isNewCustomer, tempId);
                 bookingCreated.Visibility = Visibility.Visible;
                 }
 
@@ -298,6 +283,102 @@ namespace CleanIT
         private void closeDetailBtn_Click(object sender, RoutedEventArgs e)
         {
             customerDetails.Visibility = Visibility.Hidden;
+            bookingDetails.Visibility = Visibility.Hidden;
+        }
+
+
+        void OnMouseMoveHandler(object sender, MouseEventArgs e)
+        {
+            Point p = e.GetPosition(RootCanvas);
+            double pX = p.X;
+            double pY = p.Y;
+            Canvas.SetTop(customPointer, pY);
+            Canvas.SetLeft(customPointer, pX);
+            Cursor = Cursors.None;
+        }
+
+        private void customerBtn_Click(object sender, RoutedEventArgs e)
+        {
+            privateCustomerList.Children.Clear();
+            CorporateCustomerList.Children.Clear();
+            viewCustomers.Visibility = Visibility.Visible;
+            bookingList.Visibility = Visibility.Hidden;
+            CorperateCustomerRepository corperate = new CorperateCustomerRepository();
+            PrivateCustomerRepository privateCustomer = new PrivateCustomerRepository();
+            listCustomer.Visibility = Visibility.Visible;
+            List<CorporateCustomer> corporateCustomers = corperate.GetCorporateCustomers();
+            foreach (var item in corporateCustomers)
+            {
+                Button button = new Button();
+                button.Width = 235;
+                button.Content = item.CompanyName;
+                button.Tag = item.Id;
+                button.Click += new RoutedEventHandler(openCustomerDetail_Click);
+                CorporateCustomerList.Children.Add(button);
+            }
+            List<PrivateCustomer> privateCustomers = privateCustomer.GetPrivateCustomers();
+            foreach (var item in privateCustomers)
+            {
+                Button button = new Button();
+                button.Width = 235;
+                button.Content = item.FirstName + " " + item.LastName;
+                button.Tag = item.Id;
+                button.Click += new RoutedEventHandler(openCustomerDetail_Click);
+                privateCustomerList.Children.Add(button);
+            }
+        }
+
+        private void bookingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewCustomers.Visibility = Visibility.Hidden;
+            bookingList.Visibility = Visibility.Visible;
+            List<booking> bookings = biz.getBookings();
+            foreach (var item in bookings)
+            {
+                if (item.WorkComplete == true)
+                {
+                    Button button = new Button();
+                    button.Width = 235;
+                    button.Content = item.Date;
+                    button.Tag = item.Id;
+                    button.Click += new RoutedEventHandler(openBookingDetail_Click);
+                    bookingsListComplete.Children.Add(button);
+                }
+                else
+                {
+                    Button button = new Button();
+                    button.Width = 235;
+                    button.Content = item.Date;
+                    button.Tag = item.Id;
+                    button.Click += new RoutedEventHandler(openBookingDetail_Click);
+                    bookingsListIncomplete.Children.Add(button);
+                }
+            }           
+        }
+
+        private void openBookingDetail_Click(object sender, RoutedEventArgs e)
+        {
+            bookingDetails.Visibility = Visibility.Visible;
+            Button button = sender as Button;
+            int index = Convert.ToInt32(button.Tag);
+            List<booking> bookings =  biz.getBookings();
+            foreach (var item in bookings)
+            {
+                if (item.Id == index)
+                {
+                    workDate.Text = item.Date;
+                    workPay.Text = item.HourlyPay.ToString();
+                    workTime.Text = item.WorkingHours.ToString();
+                }
+            }
+        }
+
+
+
+        private void overviewBackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            viewCustomers.Visibility = Visibility.Hidden;
+            bookingList.Visibility = Visibility.Hidden;
         }
     }
 }

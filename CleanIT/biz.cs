@@ -15,7 +15,7 @@ namespace CleanIT
         private PrivateCustomer tempPrivateCustomer;
         private booking booking;
         private int id;
-        private string connectionString = "Data Source=PC-BB-5987;Initial Catalog=cleanIt;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private string connectionString = "Data Source=DESKTOP-7VJ1O7V;Initial Catalog=cleanIt;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public DataSet Execute(string query)
         {
             
@@ -29,7 +29,7 @@ namespace CleanIT
 
         public void CreateBooking(string date, int workingHours, int hourlyPay, string bookingDescription, bool isNewCustomer, int tempId)
         {
-            booking = new booking(tempPrivateCustomer, date, workingHours, hourlyPay, bookingDescription, false);
+            booking = new booking(tempPrivateCustomer, date, workingHours, hourlyPay, bookingDescription, false, 0);
             //checks if it needs to create a new customer or just refrence an already existing one.
             if (isNewCustomer == true)
             {
@@ -40,12 +40,13 @@ namespace CleanIT
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        viewAmountSpent(tempId);
                         command.Parameters.AddWithValue("@firstName", tempPrivateCustomer.FirstName);
                         command.Parameters.AddWithValue("@lastName", tempPrivateCustomer.LastName);
                         command.Parameters.AddWithValue("@address", tempPrivateCustomer.Address);
                         command.Parameters.AddWithValue("@zipCode", tempPrivateCustomer.ZipCode);
                         command.Parameters.AddWithValue("@phoneNumber", tempPrivateCustomer.PhoneNumber);
-                        command.Parameters.AddWithValue("@amountSpent", tempPrivateCustomer.AmountSpent);
+                        command.Parameters.AddWithValue("@amountSpent", booking.HourlyPay * booking.WorkingHours);
 
                         connection.Open();
                         int result = command.ExecuteNonQuery();
@@ -73,11 +74,12 @@ namespace CleanIT
                         using (SqlConnection connection = new SqlConnection(connectionString))
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
+                        viewAmountSpent(tempId);
                             command.Parameters.AddWithValue("@companyName", tempCorporateCustomer.CompanyName);
                             command.Parameters.AddWithValue("@seNumber", tempCorporateCustomer.SeNumber);
                             command.Parameters.AddWithValue("@phoneNumber", tempCorporateCustomer.PhoneNumber);
-                            command.Parameters.AddWithValue("@amountSpent", tempCorporateCustomer.AmountSpent);
-                        connection.Open();
+                            command.Parameters.AddWithValue("@amountSpent", booking.HourlyPay * booking.WorkingHours);
+                            connection.Open();
                             int result = command.ExecuteNonQuery();
 
                             // Check Error
@@ -95,16 +97,17 @@ namespace CleanIT
                         id = privateCustomers[privateCustomers.Count - 1];                                
                 } 
                 //After creation of customer create booking.
-                String bookingQuery = "INSERT INTO Booking (workingHours,hourlyPay,bookingDescription,workComplete,foreignKey) VALUES (@workingHours, @hourlyPay, @bookingDescription, @workComplete, @foreignKey)";
+                String bookingQuery = "INSERT INTO Booking (workingHours,hourlyPay,bookingDescription,workComplete,foreignKey,date) VALUES (@workingHours, @hourlyPay, @bookingDescription, @workComplete, @foreignKey, @date)";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 using (SqlCommand command = new SqlCommand(bookingQuery, connection))
                 {
+                    viewAmountSpent(tempId);
                     command.Parameters.AddWithValue("@workingHours", booking.WorkingHours);
                     command.Parameters.AddWithValue("@hourlyPay", booking.HourlyPay);
                     command.Parameters.AddWithValue("@bookingDescription", booking.BookingDescription);
                     command.Parameters.AddWithValue("@workComplete", booking.WorkComplete);
                     command.Parameters.AddWithValue("@foreignKey", id);
-
+                    command.Parameters.AddWithValue("@date", booking.Date);
                     connection.Open();
                     int result = command.ExecuteNonQuery();
 
@@ -130,29 +133,9 @@ namespace CleanIT
                     command.Parameters.AddWithValue("@workComplete", booking.WorkComplete);
                     command.Parameters.AddWithValue("@foreignKey", tempId);
                     command.Parameters.AddWithValue("@date", booking.Date);
-                    PrivateCustomerRepository privateCustomerRepository = new PrivateCustomerRepository();
-                    CorperateCustomerRepository corperateCustomerRepository = new CorperateCustomerRepository();
-                    List<PrivateCustomer> privateCustomers = privateCustomerRepository.GetPrivateCustomers();
-                    List<CorporateCustomer> corporateCustomers = corperateCustomerRepository.GetCorporateCustomers();
-                    foreach (var item in privateCustomers)
-                    {
-                        if (item.Id == tempId)
-                        {
-                            int amountSpent = item.AmountSpent + (booking.WorkingHours * booking.HourlyPay);
-                            InsertAmountSpent("PrivateCustomer", tempId.ToString(), amountSpent);
-                        }
-                    }
-                    foreach (var item in corporateCustomers)
-                    {
-                        if (item.Id == tempId)
-                        {
-                            int amountSpent = item.AmountSpent + (booking.WorkingHours * booking.HourlyPay);
-                            InsertAmountSpent("CorporateCustomer", tempId.ToString(), amountSpent);
-                        }
-                    }
-
                     connection.Open();
                     int result = command.ExecuteNonQuery();
+                    viewAmountSpent(tempId);
 
                     // Check Error
                     if (result < 0)
@@ -165,6 +148,31 @@ namespace CleanIT
             tempCorporateCustomer = null;
             tempPrivateCustomer = null;
 
+        }
+
+
+        private void viewAmountSpent(int tempId)
+        {
+            PrivateCustomerRepository privateCustomerRepository = new PrivateCustomerRepository();
+            CorperateCustomerRepository corperateCustomerRepository = new CorperateCustomerRepository();
+            List<PrivateCustomer> privateCustomers = privateCustomerRepository.GetPrivateCustomers();
+            List<CorporateCustomer> corporateCustomers = corperateCustomerRepository.GetCorporateCustomers();
+            foreach (var item in privateCustomers)
+            {
+                if (item.Id == tempId)
+                {
+                    int amountSpent = item.AmountSpent + (booking.WorkingHours * booking.HourlyPay);
+                    InsertAmountSpent("PrivateCustomer", tempId.ToString(), amountSpent);
+                }
+            }
+            foreach (var item in corporateCustomers)
+            {
+                if (item.Id == tempId)
+                {
+                    int amountSpent = item.AmountSpent + (booking.WorkingHours * booking.HourlyPay);
+                    InsertAmountSpent("CorporateCustomer", tempId.ToString(), amountSpent);
+                }
+            }
         }
 
 
@@ -250,31 +258,47 @@ namespace CleanIT
             
             return false;
         }
-        /*
+        
+        public bool IsDateBooked(string date)
         {
-        private bool IsDatedBooked(string date)
-            DataSet dataSet =Execute("SELECT * FROM Bookings");
-            DataTable customerTable = dataSet.Tables[0];
-            List<booking> bookings = new List<booking>();
-            foreach (DataRow itemRow in customerTable.Rows)
+            DataSet dataSet = Execute("SELECT date FROM Booking");
+            DataTable bookingTable = dataSet.Tables[0];
+            List<string> dates = new List<string>();
+            foreach (DataRow itemRow in bookingTable.Rows)
             {
-
-                
-                privateCustomers.Add(
-                    new PrivateCustomer((string)itemRow["firstName"], (string)itemRow["lastName"], (string)itemRow["address"], (int)itemRow["zipCode"], (int)itemRow["phoneNumber"], (int)itemRow["id"], (int)itemRow["amountSpent"]));
-            
+                dates.Add(
+                    (string)itemRow["date"]);
             }
-
-            CorperateCustomerRepository corperateCustomer = new CorperateCustomerRepository();
-            foreach (var item in corperateCustomer.GetCorporateCustomers())
+            foreach (var item in dates)
             {
-                if (item.PhoneNumber == phoneNumber)
+                if (item.ToString() == date)
                 {
                     return true;
                 }
             }
+            return false;
         }
-            return false;*/
+
+        public string formatDate(string day, string month, string year)
+        {
+            string formattedDate = $"{day}-{month}-{year}";
+            return formattedDate;
+
+        }
+        
+        public List<booking> getBookings()
+        {
+            DataSet dataSet = Execute("SELECT * FROM Booking");
+            DataTable bookingTable = dataSet.Tables[0];
+            List<booking> bookings = new List<booking>();
+            foreach (DataRow itemRow in bookingTable.Rows)
+            {
+                bookings.Add(
+                        new booking(new Customer(0, 0), (string)itemRow["date"], (int)itemRow["workingHours"], (int)itemRow["hourlyPay"], (string)itemRow["bookingDescription"], (bool)itemRow["workComplete"], (int)itemRow["id"])
+                    );
+            }
+            return bookings;
+        }   
 
 
 
